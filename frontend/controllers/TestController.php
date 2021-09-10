@@ -1,55 +1,39 @@
 <?php
 namespace frontend\controllers;
 
-use frontend\models\Test;
-use frontend\models\ResendVerificationEmailForm;
-use frontend\models\VerifyEmailForm;
 use Yii;
-use yii\base\InvalidArgumentException;
-use yii\web\BadRequestHttpException;
+use Faker\Factory;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
-
+use frontend\models\News;
 
 
 class TestController extends Controller {
 
-	public function actionIndex() {
-
-		$max = Yii::$app->params['maxNewsInList'];
-
-		$list = Test::getNewsList($max);
-
-		return $this->render('index', [
-			'list' => $list,
-		]);
-
-	}
-
-	public function actionView($id) {
+	public function actionGenerate()
+	{
+		/*
+			for ($i = 0; $i < 100; $i++) {
 		
-		$item = Test::getItem($id);
+			$faker = Factory::create();
+			$newsItem = new News();
 
-		return $this->render('view', [
-			'item' => $item
-		]);
-	}
+			$newsItem->title = $faker->text(35);
+			$newsItem->content = $faker->text(rand(1000, 2000));
+			$newsItem->status = rand(0, 1);
 
-	public function actionMail() {
-		$result = Yii::$app->mailer->compose()
-    ->setFrom('test.konkore@gmail.com')
-    ->setTo('korenev@iled.com.ua')
-    ->setSubject('Тема сообщения')
-    ->setTextBody('Текст сообщения')
-    ->setHtmlBody('<b>текст сообщения в формате HTML</b>')
-    ->send();
-  var_dump($result);
-  die;
+			$newsItem->save();
+		}
+
+		*/
+			//если надо вставить 10000 записей
+		$faker = Factory::create();
+		
+		for ($j = 0; $j < 100; $j++) {
+			$news = [];
+			for ($i = 0; $i < 100; $i++) {
+				$news[] = [$faker->text(rand(30, 45)), $faker->text(rand(2000, 3000)), rand(0, 1)];
+			}
+			Yii::$app->db->createCommand()->batchInsert('news', ['title', 'content', 'status'], $news)->execute();
+		}
 	}
 }
