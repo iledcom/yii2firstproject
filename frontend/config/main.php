@@ -14,7 +14,7 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
-            'enableCsrfValidation' => false, // Отключена Csrf валидация
+            'enableCsrfValidation' => true,
         ],
         'user' => [
             'identityClass' => 'frontend\models\User',
